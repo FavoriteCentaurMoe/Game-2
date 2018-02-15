@@ -8,15 +8,12 @@ public class playerScript : MonoBehaviour {
 
 
     public float speed;
-
+    
  
 
     private float speedMultipliyer;
-
     public int jumpIntensity;
-
     public float moveX;
-
     public float fallMultiplier;
     public float lowJumpMultiplier;
     public bool betterJump;
