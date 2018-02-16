@@ -49,7 +49,7 @@ public class laserScript : MonoBehaviour {
     {
         while (true)
         {
-            Debug.Log("Something has happened");
+
             if (this.gameObject.GetComponent<SpriteRenderer>().sprite == fight)
             {
                 this.gameObject.GetComponent<SpriteRenderer>().sprite = chill;

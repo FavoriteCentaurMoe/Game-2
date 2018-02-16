@@ -57,6 +57,11 @@ public class gameManager : MonoBehaviour {
         gm.RespawnPlayer();
     }
 
+    public static void changeCheckpoint(Transform point)
+    {
+        gm.spawnPoint = point;
+    }
+
 
     // Update is called once per frame
     void Update () {
