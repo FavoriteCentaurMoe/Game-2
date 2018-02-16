@@ -5,10 +5,11 @@ using UnityEngine;
 public class playerScript : MonoBehaviour {
 
 
+    public Animator anim;
 
 
     public float speed;
-    
+    private float spood;
  
 
     private float speedMultipliyer;
@@ -22,7 +23,7 @@ public class playerScript : MonoBehaviour {
     public bool facingRight = true;
     public bool wallJumpWasFacingRight = true;
     public bool wallJump = false;
-    private bool isJumping;
+    public bool isJumping;
 
     [SerializeField]
     public float groundRadius;
@@ -49,7 +50,6 @@ public class playerScript : MonoBehaviour {
     private void Awake()
     {
         playerRiggy = GetComponent<Rigidbody2D>();
-        //speed = 10;
         fallMultiplier = 2.5f;
         lowJumpMultiplier = 2f;
         grounded = true;
@@ -58,7 +58,7 @@ public class playerScript : MonoBehaviour {
 
     // Use this for initialization
     void Start() {
-
+        anim = GetComponent<Animator>();
     }
 
     // Update is called once per frame
@@ -88,15 +88,22 @@ public class playerScript : MonoBehaviour {
     bool IsGrounded()
     {
         float directionOriginOffset = originOffset * (Vector2.down.y > 0 ? 1 : -1);
-        Vector2 startingPosition = new Vector2(transform.position.x, transform.position.y + directionOriginOffset);
-        RaycastHit2D hit = Physics2D.Raycast(startingPosition, Vector2.down,0.01f);
+        // Vector2 startingPosition = new Vector2(transform.position.x, transform.position.y + directionOriginOffset);
+        Vector2 startingPosition = new Vector2(transform.position.x, transform.position.y );
+        Vector2 test = new Vector2(Vector2.down.x * raycastMaxDistance, Vector2.down.y);
+        Debug.DrawRay(startingPosition, test, Color.red);
+        RaycastHit2D hit = Physics2D.Raycast(startingPosition, Vector2.down,1f);
         if (hit)
         {
             wallJump = true;
+            //  isJumping = false;
+            Debug.Log("HEY");
             return true;
         }
         else
         {
+            //  isJumping = false;
+            Debug.Log("HO");
             return false;
         }
     }
@@ -112,10 +119,30 @@ public class playerScript : MonoBehaviour {
     }
 
 
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if(collision.transform.tag == "Ground")
+        {
+            isJumping = false;
+        }
+    }
+
+    private void OnCollisionExit2D(Collision2D collision)
+    {
+        if (collision.transform.tag == "Ground")
+        {
+            isJumping = true;
+        }
+    }
+
+
+
     private void FixedUpdate()
     {
 
         grounded = IsGrounded();
+        Debug.Log("Grounded is " + grounded);
+       
         Vector2 direction = facingRight ? new Vector2(1, 0) : new Vector2(-1, 0);
         raycast = CheckRaycast(direction);
         walled = IsWalled();
@@ -124,7 +151,6 @@ public class playerScript : MonoBehaviour {
            
             if(playerRiggy.velocity.y < -wallSlideSpeed)
             {
-              //  playerRiggy.velocity = new Vector2(playerRiggy.velocity.x, wallSlideSpeed);
                 
             }
 
@@ -132,7 +158,24 @@ public class playerScript : MonoBehaviour {
         move();
         BetterJump();
 
+        spood =  playerRiggy.velocity.x;
 
+        if(spood > 0)
+        {
+            transform.localScale = new Vector3(1f, 1f, 1f);
+        }
+        else
+        {
+            transform.localScale = new Vector3(-1f, 1f, 1f);
+        }
+
+        if (spood < -0.1)
+        {
+            spood = -spood;
+        
+        }
+        anim.SetFloat("spood", spood);
+        anim.SetBool("grounded", isJumping);
 
 
     }
@@ -185,19 +228,14 @@ public class playerScript : MonoBehaviour {
             facingRight = false;
         }
 
-
-        //playerRiggy.AddForce(new Vector2(moveX * speed * speedMultipliyer, playerRiggy.velocity.y));
         if (Input.GetButtonDown("Jump"))
         {
             if(grounded == true)
             {
-                isJumping = true;
                 jump();
             }
             else if ((walled == true && wallJump)||(walled == true && (wallJumpWasFacingRight!=facingRight)))
             {
-                Debug.Log("HRY");
-                isJumping = true;
                 jump();
                 wallJump = false;
                 wallJumpWasFacingRight = facingRight;
@@ -210,8 +248,6 @@ public class playerScript : MonoBehaviour {
                 {
                     thing = -40;
                 }
-                //playerRiggy.velocity = new Vector2(thing, playerRiggy.velocity.y);
-                //playerRiggy.AddForce(new Vector2(thing*10, playerRiggy.velocity.y));
                 playerRiggy.velocity = new Vector2(speed * raycast.normal.x, speed);
                 StartCoroutine("TurnIt");
             }

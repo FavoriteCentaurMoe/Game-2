@@ -10,24 +10,25 @@ public class checkPoint : MonoBehaviour {
 
     private Transform test;
 
-    private bool first;
+
+    public int rank;
 
 
-	// Use this for initialization
-	void Start () {
+    // Use this for initialization
+    void Start () {
         this.gameObject.GetComponent<SpriteRenderer>().sprite = off;
         test = this.gameObject.GetComponent<Transform>();
-        first = true;
+       
     }
 
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if(collision.transform.tag == "Player" && first == true)
+        if(collision.transform.tag == "Player" )
         {
-            gameManager.changeCheckpoint(test);
+            gameManager.changeCheckpoint(test,rank);
             this.gameObject.GetComponent<SpriteRenderer>().sprite = on;
-            first = false;
+           
         }
         
     }

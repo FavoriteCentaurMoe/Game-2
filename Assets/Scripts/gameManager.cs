@@ -8,6 +8,7 @@ public class gameManager : MonoBehaviour {
 
     public Transform playerPrefab;
     public Transform spawnPoint;
+    private int spawnRank = 0;
     private Transform cam;
 
     private Vector3 previousCamPosition;
@@ -57,9 +58,13 @@ public class gameManager : MonoBehaviour {
         gm.RespawnPlayer();
     }
 
-    public static void changeCheckpoint(Transform point)
+    public static void changeCheckpoint(Transform point, int rank)
     {
-        gm.spawnPoint = point;
+        if (rank > gm.spawnRank)
+        {
+            gm.spawnPoint = point;
+            gm.spawnRank = rank;
+        }
     }
 
 

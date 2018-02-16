@@ -10,6 +10,12 @@ public class laserScript : MonoBehaviour {
 
     private float height;
 
+   
+
+    public float time;
+    public LayerMask whatIsGround;
+
+
 
 
 
@@ -28,7 +34,11 @@ public class laserScript : MonoBehaviour {
         raycast = CheckRaycast(Vector2.down);
         if(raycast)
         {
-            if (raycast.transform.tag == "Player")
+            if (raycast.transform.tag == "Ground" && this.gameObject.GetComponent<SpriteRenderer>().sprite != fight)
+            {
+                return;
+            }
+            if (raycast.transform.tag == "Player" && this.gameObject.GetComponent<SpriteRenderer>().sprite != fight)
             {
                 gameManager.KillPlayer(raycast.transform.GetComponent<playerScript>());
             }
@@ -59,7 +69,7 @@ public class laserScript : MonoBehaviour {
                 this.gameObject.GetComponent<SpriteRenderer>().sprite = fight;
             }
 
-            yield return new WaitForSeconds(1f);
+            yield return new WaitForSeconds(time);
         }
     }
 
