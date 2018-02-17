@@ -15,7 +15,7 @@ public class cameraControl : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
         // player = GameObject.FindGameObjectWithTag("Player");
-        smoothSpeed = 10.0f;
+        smoothSpeed = 15.0f;
     }
 	
 

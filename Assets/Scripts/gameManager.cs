@@ -67,6 +67,11 @@ public class gameManager : MonoBehaviour {
         }
     }
 
+    public static void KillEnemy(enemyScript enemy)
+    {
+        Destroy(enemy.gameObject);
+    }
+
 
     // Update is called once per frame
     void Update () {

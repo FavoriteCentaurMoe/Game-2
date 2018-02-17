@@ -59,11 +59,15 @@ public class playerScript : MonoBehaviour {
     // Use this for initialization
     void Start() {
         anim = GetComponent<Animator>();
+        Physics2D.queriesStartInColliders = false;
     }
 
     // Update is called once per frame
     void Update() {
-
+        if (transform.position.y <= -50)
+        {
+            DamagePlayer(200);
+        }
     }
 
     public void DamagePlayer(int damage)
@@ -71,7 +75,7 @@ public class playerScript : MonoBehaviour {
         health = health - damage;
         if (health <= 0)
         {
-            // GameController.KillPlayer(this);
+            gameManager.KillPlayer(this);
 
         }
     }
@@ -80,7 +84,7 @@ public class playerScript : MonoBehaviour {
     {
         Vector2 startingPosition = new Vector2(transform.position.x, transform.position.y);
         Vector2 test = new Vector2(direction.x * raycastMaxDistance, direction.y);
-        Debug.DrawRay(startingPosition, test, Color.red);       
+        //Debug.DrawRay(startingPosition, test, Color.red);       
 
         return Physics2D.Raycast(startingPosition, direction, raycastMaxDistance,whatIsGround);
     }
@@ -91,19 +95,29 @@ public class playerScript : MonoBehaviour {
         // Vector2 startingPosition = new Vector2(transform.position.x, transform.position.y + directionOriginOffset);
         Vector2 startingPosition = new Vector2(transform.position.x, transform.position.y );
         Vector2 test = new Vector2(Vector2.down.x * raycastMaxDistance, Vector2.down.y);
-        Debug.DrawRay(startingPosition, test, Color.red);
-        RaycastHit2D hit = Physics2D.Raycast(startingPosition, Vector2.down,1f);
+        //Debug.DrawRay(startingPosition, test, Color.red);
+        RaycastHit2D hit = Physics2D.Raycast(startingPosition, Vector2.down,0.5f);
         if (hit)
         {
+            //Debug.Log(hit.transform.tag);
+
+            transform.parent = hit.transform.tag == "Moving Platform" ? hit.transform.parent.transform : null;
+
+
+            //if (hit.transform.tag == "Moving Platform")
+           // {
+           //     transform.parent = hit.transform.parent.transform;
+           // }
+           // else
+           // {
+           //     transform.parent = null;
+           // }
+
             wallJump = true;
-            //  isJumping = false;
-            Debug.Log("HEY");
             return true;
         }
         else
         {
-            //  isJumping = false;
-            Debug.Log("HO");
             return false;
         }
     }
@@ -121,18 +135,26 @@ public class playerScript : MonoBehaviour {
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if(collision.transform.tag == "Ground")
-        {
-            isJumping = false;
-        }
+       // if(collision.transform.tag == "Moving Platform")
+       // {
+       //     Debug.Log("YUP");
+       //     transform.parent = collision.transform;
+       // }
+        //isJumping = false;
     }
-
     private void OnCollisionExit2D(Collision2D collision)
     {
-        if (collision.transform.tag == "Ground")
-        {
-            isJumping = true;
-        }
+
+       // Debug.Log("NO");
+       // if (collision.transform.tag == "Moving Platform")
+       // {
+       //     transform.parent = null;
+       // }
+    }
+
+    void ifMovingP()
+    {
+
     }
 
 
@@ -141,22 +163,22 @@ public class playerScript : MonoBehaviour {
     {
 
         grounded = IsGrounded();
-        Debug.Log("Grounded is " + grounded);
-       
         Vector2 direction = facingRight ? new Vector2(1, 0) : new Vector2(-1, 0);
         raycast = CheckRaycast(direction);
         walled = IsWalled();
-        if(walled && !grounded && playerRiggy.velocity.y <= 0)
-        {
+    //    if(walled && !grounded && playerRiggy.velocity.y <= 0)
+      //  {
            
-            if(playerRiggy.velocity.y < -wallSlideSpeed)
-            {
+        //    if(playerRiggy.velocity.y < -wallSlideSpeed)
+          //  {
                 
-            }
+    //        }
 
-        }
+  //      }
         move();
         BetterJump();
+        ifMovingP();
+
 
         spood =  playerRiggy.velocity.x;
 
@@ -174,8 +196,9 @@ public class playerScript : MonoBehaviour {
             spood = -spood;
         
         }
+
         anim.SetFloat("spood", spood);
-        anim.SetBool("grounded", isJumping);
+        anim.SetBool("grounded", grounded);
 
 
     }

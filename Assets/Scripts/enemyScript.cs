@@ -6,11 +6,14 @@ public class enemyScript : MonoBehaviour {
 
     public bool isRight;
     public int speed;
+    public int health;
     public float raycastMaxDistance = 0.1f;
     public Rigidbody2D rb;
 
+    private Vector2 movement;
     private bool walled;
-    private RaycastHit2D raycast; 
+    private RaycastHit2D raycast;
+    private RaycastHit2D goombaDeath;
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
@@ -25,6 +28,15 @@ public class enemyScript : MonoBehaviour {
         if (collision.transform.tag == "Player")
         {
             gameManager.KillPlayer(collision.transform.GetComponent<playerScript>());
+        }
+    }
+
+    public void DamageEnemy(int damage)
+    {
+        health = health - damage;
+        if (health <= 0)
+        {
+            gameManager.KillEnemy(this);
         }
     }
 
@@ -65,14 +77,34 @@ public class enemyScript : MonoBehaviour {
         }      
     }
 
+    private void Update()
+    {
+        if (isRight)
+        {
+            movement = new Vector2(speed, rb.velocity.y);
+        }
+        else
+        {
+            movement = new Vector2(-speed, rb.velocity.y);
+        }
+    }
+
+
     // Update is called once per frame
-    void Update () {
+    void FixedUpdate () {
 
        
         Vector2 direction = isRight ? new Vector2(1, 0) : new Vector2(-1, 0);
         raycast = CheckRaycast(direction);
+        goombaDeath = CheckRaycast(Vector2.up);
+        if(goombaDeath)
+        {
+            DamageEnemy(200);
+        }
+
         Walled();
 
+        /*
         if (isRight)
         {
             rb.velocity = new Vector2(speed, rb.velocity.y);
@@ -81,6 +113,14 @@ public class enemyScript : MonoBehaviour {
         {
             rb.velocity = new Vector2(-speed, rb.velocity.y);
         }
-		
-	}
+        */
+
+        rb.velocity = movement;
+
+        if (transform.position.y <= -50)
+        {
+            DamageEnemy(200);
+        }
+
+    }
 }
