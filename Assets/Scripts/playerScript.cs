@@ -94,7 +94,7 @@ public class playerScript : MonoBehaviour {
         float directionOriginOffset = originOffset * (Vector2.down.y > 0 ? 1 : -1);
         // Vector2 startingPosition = new Vector2(transform.position.x, transform.position.y + directionOriginOffset);
         Vector2 startingPosition = new Vector2(transform.position.x, transform.position.y );
-        Vector2 test = new Vector2(Vector2.down.x * raycastMaxDistance, Vector2.down.y);
+       // Vector2 test = new Vector2(Vector2.down.x * raycastMaxDistance, Vector2.down.y);
         //Debug.DrawRay(startingPosition, test, Color.red);
         RaycastHit2D hit = Physics2D.Raycast(startingPosition, Vector2.down,0.5f);
         if (hit)
@@ -118,6 +118,7 @@ public class playerScript : MonoBehaviour {
         }
         else
         {
+            transform.parent = null;
             return false;
         }
     }
@@ -262,15 +263,15 @@ public class playerScript : MonoBehaviour {
                 jump();
                 wallJump = false;
                 wallJumpWasFacingRight = facingRight;
-                int thing;
-                if(!wallJumpWasFacingRight)
-                {
-                    thing = 40;
-                }
-                else
-                {
-                    thing = -40;
-                }
+               // int thing;
+               // if(!wallJumpWasFacingRight)
+               // {
+               //     thing = 40;
+                //}
+               // else
+               // {
+               //     thing = -40;
+               // }
                 playerRiggy.velocity = new Vector2(speed * raycast.normal.x, speed);
                 StartCoroutine("TurnIt");
             }

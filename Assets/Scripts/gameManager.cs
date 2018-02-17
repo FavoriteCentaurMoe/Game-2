@@ -45,6 +45,11 @@ public class gameManager : MonoBehaviour {
 
     }
 
+    public static void openDoor(int num)
+    {
+
+    }
+
     public static void KillPlayer(playerScript player)
     {
         Destroy(player.gameObject);
@@ -69,6 +74,7 @@ public class gameManager : MonoBehaviour {
 
     public static void KillEnemy(enemyScript enemy)
     {
+
         Destroy(enemy.gameObject);
     }
 

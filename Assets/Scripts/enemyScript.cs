@@ -21,6 +21,8 @@ public class enemyScript : MonoBehaviour {
         {
             gameManager.KillPlayer(collision.transform.GetComponent<playerScript>());
         }
+
+
     }
 
     private void OnCollisionEnter2D(Collision2D collision)

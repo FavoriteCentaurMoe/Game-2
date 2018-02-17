@@ -10,7 +10,7 @@ public class laserScript : MonoBehaviour {
 
     private float height;
 
-   
+    public bool sideways = false;
 
     public float time;
     public LayerMask whatIsGround;
@@ -24,16 +24,33 @@ public class laserScript : MonoBehaviour {
     // Use this for initialization
     void Start () {
         StartCoroutine("changeMode");
-        height = GetComponent<SpriteRenderer>().bounds.size.y;
+        if(!sideways)
+        {
+            height = GetComponent<SpriteRenderer>().bounds.size.y - 0.1f;
+        }
+        else
+        {
+            height = GetComponent<SpriteRenderer>().bounds.size.y - 0.1f;
+        }
+        
         Debug.Log("Oh the look the size is  " + height);
     }
 
 
     private void FixedUpdate()
     {
-        raycast = CheckRaycast(Vector2.down);
+        if(!sideways)
+        {
+            raycast = CheckRaycast(Vector2.down);
+        }
+        else
+        {
+            raycast = CheckRaycast(Vector2.right);
+        }
+        
         if(raycast)
         {
+            Debug.Log("Here we have " + raycast.transform.tag);
             if (raycast.transform.tag == "Ground" && this.gameObject.GetComponent<SpriteRenderer>().sprite != fight)
             {
                 return;
@@ -42,6 +59,12 @@ public class laserScript : MonoBehaviour {
             {
                 gameManager.KillPlayer(raycast.transform.GetComponent<playerScript>());
             }
+            if(raycast.transform.tag == "Enemy" && this.gameObject.GetComponent<SpriteRenderer>().sprite != fight)
+            {
+                gameManager.KillEnemy(raycast.transform.GetComponent<enemyScript>());
+            }
+
+     
         }
     }
 
