@@ -31,7 +31,7 @@ public class playerScript : MonoBehaviour {
     private RaycastHit2D raycast;
     
     public float originOffset = 0.5f;
-    public float raycastMaxDistance = 0.0001f;
+    public float raycastMaxDistance = 0.1f;
 
     public int health = 100;
   
@@ -104,14 +104,6 @@ public class playerScript : MonoBehaviour {
             transform.parent = hit.transform.tag == "Moving Platform" ? hit.transform.parent.transform : null;
 
 
-            //if (hit.transform.tag == "Moving Platform")
-           // {
-           //     transform.parent = hit.transform.parent.transform;
-           // }
-           // else
-           // {
-           //     transform.parent = null;
-           // }
 
             wallJump = true;
             return true;
@@ -263,15 +255,8 @@ public class playerScript : MonoBehaviour {
                 jump();
                 wallJump = false;
                 wallJumpWasFacingRight = facingRight;
-               // int thing;
-               // if(!wallJumpWasFacingRight)
-               // {
-               //     thing = 40;
-                //}
-               // else
-               // {
-               //     thing = -40;
-               // }
+                StartCoroutine("TurnIt");
+                Debug.Log("HRY");
                 playerRiggy.velocity = new Vector2(speed * raycast.normal.x, speed);
                 StartCoroutine("TurnIt");
             }
@@ -288,8 +273,11 @@ public class playerScript : MonoBehaviour {
 
     IEnumerator TurnIt()
     {
+        Debug.Log("Is this even doing shit");
+        transform.localScale = transform.localScale.x == 1 ? new Vector2(1, -1) : Vector2.one;
         yield return new WaitForFixedUpdate();
-        transform.localScale = transform.localScale.x == 1 ? new Vector2(-1, 1) : Vector2.one;
+        
+        Debug.Log("Is thNOOOOOOOOOOOis even doing shit");
 
     }
 }

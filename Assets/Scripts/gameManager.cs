@@ -6,10 +6,14 @@ public class gameManager : MonoBehaviour {
 
     public static gameManager gm;
 
+    public GameObject winGame;
+
     public Transform playerPrefab;
     public Transform spawnPoint;
     private int spawnRank = 0;
     private Transform cam;
+
+
 
     private Vector3 previousCamPosition;
 
@@ -23,6 +27,7 @@ public class gameManager : MonoBehaviour {
 
     private void Awake()
     {
+        winGame.SetActive(false);
         cam = Camera.main.transform;
     }
 
@@ -72,11 +77,18 @@ public class gameManager : MonoBehaviour {
         }
     }
 
+    public static void endGame()
+    {
+        Time.timeScale = 0f;
+        gm.winGame.SetActive(true);
+    }
+
     public static void KillEnemy(enemyScript enemy)
     {
-
         Destroy(enemy.gameObject);
     }
+
+
 
 
     // Update is called once per frame
