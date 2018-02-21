@@ -15,6 +15,8 @@ public class enemyScript : MonoBehaviour {
     private RaycastHit2D raycast;
     private RaycastHit2D goombaDeath;
 
+    public float height;
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if(collision.transform.tag == "Player")
@@ -44,14 +46,14 @@ public class enemyScript : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
-
+        height = height = GetComponent<SpriteRenderer>().bounds.size.x;
         rb = GetComponent<Rigidbody2D>();
         Physics2D.queriesStartInColliders = false;
 	}
 
-    RaycastHit2D CheckRaycast(Vector2 direction)
+    RaycastHit2D CheckRaycast(Vector2 direction, float change = 0)
     {
-        Vector2 startingPosition = new Vector2(transform.position.x, transform.position.y);
+        Vector2 startingPosition = new Vector2(transform.position.x + change, transform.position.y);
         Vector2 test = new Vector2(direction.x * raycastMaxDistance, direction.y);
         Debug.DrawRay(startingPosition, test, Color.red);
 
@@ -100,6 +102,16 @@ public class enemyScript : MonoBehaviour {
         raycast = CheckRaycast(direction);
         goombaDeath = CheckRaycast(Vector2.up);
         if(goombaDeath)
+        {
+            DamageEnemy(200);
+        }
+        goombaDeath = CheckRaycast(Vector2.up, (height/2));
+        if (goombaDeath)
+        {
+            DamageEnemy(200);
+        }
+        goombaDeath = CheckRaycast(Vector2.up,(-height/2));
+        if (goombaDeath)
         {
             DamageEnemy(200);
         }
