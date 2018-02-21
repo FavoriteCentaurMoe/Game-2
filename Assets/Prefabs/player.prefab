@@ -205,7 +205,8 @@ MonoBehaviour:
   damage: 10
   notToHit:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 4294966783
+  bullet: {fileID: 1662824299839488, guid: e5ffb584aa9a4f14d92f597c143a86e7, type: 2}
 --- !u!212 &212009720678155202
 SpriteRenderer:
   m_ObjectHideFlags: 1

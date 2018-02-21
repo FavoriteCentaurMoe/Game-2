@@ -57,6 +57,8 @@ public class playerScript : MonoBehaviour {
 
 
     public GameObject bullet;
+    public GameObject gun;
+    public int bulletSpeed; 
 
     private void Awake()
     {
@@ -161,6 +163,22 @@ public class playerScript : MonoBehaviour {
 
     }
 
+    public void effect()
+    {
+        float change = facingRight == true ? 0.0f : -1f;
+        float rotChange = facingRight == true ? 1f : -1f;
+
+        Vector3 pos = new Vector3(transform.position.x + (change * 3), transform.position.y, transform.position.z);
+        Rigidbody2D clone;
+      //  Instantiate(bullet, transform.position, transform.rotation);
+        //clone.velocity = transform.TransformDirection(Vector3.forward * 10);
+         clone = Instantiate(bullet, pos, transform.rotation).GetComponent<Rigidbody2D>();
+
+        //clone.velocity = transform.TransformDirection(Vector3.forward * 100);
+        clone.velocity = new Vector2( (bulletSpeed * rotChange) , clone.velocity.y);
+      //  playerRiggy.velocity = new Vector2(moveX * speed * speedMultipliyer, playerRiggy.velocity.y);
+
+    }
     public void shoot()
     {
 
@@ -172,12 +190,12 @@ public class playerScript : MonoBehaviour {
         Vector2 direction = facingRight ? new Vector2(1, 0) : new Vector2(-1, 0);
         //raycast = CheckRaycast(direction);
 
-        Vector2 startingPosition = new Vector2(transform.position.x, transform.position.y);
-        Vector2 test = new Vector2(direction.x * 10f, direction.y);
+        Vector2 startingPosition = new Vector2(transform.position.x , transform.position.y);
+        Vector2 test = new Vector2(direction.x * 15f, direction.y);
         Debug.DrawRay(startingPosition, test, Color.red);       
 
-        RaycastHit2D hit =  Physics2D.Raycast(startingPosition, direction, 10f, notToHit );
-
+        RaycastHit2D hit =  Physics2D.Raycast(startingPosition, direction, 15f, notToHit );
+        effect();
         if(hit)
         {
             Debug.Log("Oh yes you've now hit " + hit.transform.tag);
@@ -212,6 +230,16 @@ public class playerScript : MonoBehaviour {
 
 
         spood =  playerRiggy.velocity.x;
+
+        if(spood == 0 && facingRight == true)
+        {
+            Debug.Log("Yes");
+            gun.transform.localScale = new  Vector3(-3f, 3f, 1f);
+        }
+        else
+        {
+            gun.transform.localScale = new Vector3(3f, 3f, 1f);
+        }
 
         if(spood > 0)
         {
