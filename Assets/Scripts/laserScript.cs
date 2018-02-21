@@ -33,7 +33,7 @@ public class laserScript : MonoBehaviour {
             height = GetComponent<SpriteRenderer>().bounds.size.y - 0.1f;
         }
         
-        Debug.Log("Oh the look the size is  " + height);
+      //  Debug.Log("Oh the look the size is  " + height);
     }
 
 
@@ -50,7 +50,7 @@ public class laserScript : MonoBehaviour {
         
         if(raycast)
         {
-            Debug.Log("Here we have " + raycast.transform.tag);
+           // Debug.Log("Here we have " + raycast.transform.tag);
             if (raycast.transform.tag == "Ground" && this.gameObject.GetComponent<SpriteRenderer>().sprite != fight)
             {
                 return;

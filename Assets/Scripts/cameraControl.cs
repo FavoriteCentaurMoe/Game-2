@@ -18,6 +18,7 @@ public class cameraControl : MonoBehaviour {
         smoothSpeed = 15.0f;
     }
 	
+    
 
 
 

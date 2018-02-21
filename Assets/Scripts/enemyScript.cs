@@ -23,6 +23,11 @@ public class enemyScript : MonoBehaviour {
         {
             gameManager.KillPlayer(collision.transform.GetComponent<playerScript>());
         }
+        if (collision.transform.tag == "Laser")
+        {
+            //gameManager.KillPlayer(collision.transform.GetComponent<playerScript>());
+            DamageEnemy(100);
+        }
 
 
     }

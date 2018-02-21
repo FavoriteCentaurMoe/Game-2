@@ -21,7 +21,7 @@ public class doorScript : MonoBehaviour
 
     public void openThis()
     {
-        Debug.Log("Called");
+       // Debug.Log("Called");
         boxx.isTrigger = true;
         close = false;
        

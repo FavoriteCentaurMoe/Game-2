@@ -6,7 +6,8 @@ public class portalScript : MonoBehaviour {
 
     public int level;
     public bool last;
-
+    public int rank;
+    public Transform test;
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if(collision.transform.tag == "Player")
@@ -14,6 +15,12 @@ public class portalScript : MonoBehaviour {
             if(last)
             {
                 gameManager.endGame();
+            }
+            else
+            {
+                Debug.Log("H");
+                gameManager.changeCheckpoint(test, rank);
+                gameManager.KillPlayer(collision.transform.GetComponent<playerScript>());
             }
         }
     }

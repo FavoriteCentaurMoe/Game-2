@@ -47,6 +47,17 @@ public class playerScript : MonoBehaviour {
     public Vector2 wallLeap;
     //public Vector2 wallJump;
 
+    public int fireRate = 0;
+
+    public int damage = 10;
+
+    public LayerMask notToHit;
+
+    float timeToFire;
+
+
+    public GameObject bullet;
+
     private void Awake()
     {
         playerRiggy = GetComponent<Rigidbody2D>();
@@ -150,6 +161,33 @@ public class playerScript : MonoBehaviour {
 
     }
 
+    public void shoot()
+    {
+
+        //GameObject thing;
+        //Vector3 pos = new Vector3(transform.position.x, transform.position.y, transform.position.z);
+        //thing = Instantiate(bullet);
+
+       // Debug.Log("I AM SHOOOTING");
+        Vector2 direction = facingRight ? new Vector2(1, 0) : new Vector2(-1, 0);
+        //raycast = CheckRaycast(direction);
+
+        Vector2 startingPosition = new Vector2(transform.position.x, transform.position.y);
+        Vector2 test = new Vector2(direction.x * 10f, direction.y);
+        Debug.DrawRay(startingPosition, test, Color.red);       
+
+        RaycastHit2D hit =  Physics2D.Raycast(startingPosition, direction, 10f, notToHit );
+
+        if(hit)
+        {
+            Debug.Log("Oh yes you've now hit " + hit.transform.tag);
+            if (hit.transform.tag == "Enemy")
+            {
+                Debug.Log("ATTACKing THE ENEMY");
+                gameManager.KillEnemy(hit.transform.GetComponent<enemyScript>());
+            }
+        }
+    }
 
 
     private void FixedUpdate()
@@ -190,11 +228,30 @@ public class playerScript : MonoBehaviour {
         
         }
 
+        if (fireRate == 0)
+        {
+            if (Input.GetButtonDown("Fire1"))
+            {
+                shoot();
+            }
+        }
+        else
+        {
+            if (Input.GetButton("Fire1") && Time.time > timeToFire)
+            {
+                timeToFire = Time.time + 1 / fireRate;
+                shoot();
+            }
+
+        }
+
+
         anim.SetFloat("spood", spood);
         anim.SetBool("grounded", grounded);
 
 
     }
+
 
 
     void BetterJump()
@@ -256,7 +313,7 @@ public class playerScript : MonoBehaviour {
                 wallJump = false;
                 wallJumpWasFacingRight = facingRight;
                 StartCoroutine("TurnIt");
-                Debug.Log("HRY");
+                //Debug.Log("HRY");
                 playerRiggy.velocity = new Vector2(speed * raycast.normal.x, speed);
                 StartCoroutine("TurnIt");
             }
@@ -273,11 +330,11 @@ public class playerScript : MonoBehaviour {
 
     IEnumerator TurnIt()
     {
-        Debug.Log("Is this even doing shit");
+      //  Debug.Log("Is this even doing shit");
         transform.localScale = transform.localScale.x == 1 ? new Vector2(1, -1) : Vector2.one;
         yield return new WaitForFixedUpdate();
         
-        Debug.Log("Is thNOOOOOOOOOOOis even doing shit");
+      //  Debug.Log("Is thNOOOOOOOOOOOis even doing shit");
 
     }
 }
