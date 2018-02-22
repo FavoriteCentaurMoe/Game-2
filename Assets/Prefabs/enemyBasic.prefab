@@ -100,10 +100,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isRight: 0
-  speed: 2
+  speed: 5
   health: 0
   raycastMaxDistance: 0.8
+  raycastCheckUp: 1
+  raycastCheckAhead: 1
   rb: {fileID: 0}
+  previousDirection: 0
+  checkDown: 0
+  height: 0
+  facingRight: 0
 --- !u!212 &212607463567637806
 SpriteRenderer:
   m_ObjectHideFlags: 1

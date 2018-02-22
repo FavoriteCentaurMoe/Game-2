@@ -13,6 +13,9 @@ public class gameManager : MonoBehaviour {
     private int spawnRank = 0;
     private Transform cam;
 
+    public bool gunOn = false;
+
+    //public GameObject gun;
 
 
     private Vector3 previousCamPosition;
@@ -21,6 +24,7 @@ public class gameManager : MonoBehaviour {
     private float[] parallaxScales;
     public float smooth = 1;
 
+    public static int coins = 0;
 
     [SerializeField]
     public static int lives = 5;
@@ -31,6 +35,11 @@ public class gameManager : MonoBehaviour {
         cam = Camera.main.transform;
     }
 
+
+    public static void moreCoins()
+    {
+        coins += 1;
+    }
 
     // Use this for initialization
     void Start () {
@@ -46,6 +55,7 @@ public class gameManager : MonoBehaviour {
         if (lives >= 0)
         {
             Instantiate(playerPrefab, spawnPoint.position, spawnPoint.rotation);
+           
         }
 
     }
@@ -53,6 +63,17 @@ public class gameManager : MonoBehaviour {
     public static void openDoor(int num)
     {
 
+    }
+
+    public static void gunActive()
+    {
+        gm.gunOn = true;
+        //gun.SetActive(true);
+    }
+
+    public static bool gunStatus()
+    {
+        return gm.gunOn;
     }
 
     public static void KillPlayer(playerScript player)

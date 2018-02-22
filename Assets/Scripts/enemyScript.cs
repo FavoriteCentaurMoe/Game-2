@@ -7,7 +7,10 @@ public class enemyScript : MonoBehaviour {
     public bool isRight;
     public int speed;
     public int health;
-    public float raycastMaxDistance = 0.1f;
+    public float raycastMaxDistance;
+    public float raycastCheckUp;
+    public float raycastCheckAhead;
+    
     public Rigidbody2D rb;
 
     private Vector2 movement;
@@ -15,7 +18,15 @@ public class enemyScript : MonoBehaviour {
     private RaycastHit2D raycast;
     private RaycastHit2D goombaDeath;
 
+    public bool previousDirection;
+
+    public bool checkDown;
+
     public float height;
+
+    public bool facingRight = false;
+
+    public bool abnormal;
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
@@ -54,6 +65,7 @@ public class enemyScript : MonoBehaviour {
         height = height = GetComponent<SpriteRenderer>().bounds.size.x;
         rb = GetComponent<Rigidbody2D>();
         Physics2D.queriesStartInColliders = false;
+        previousDirection = isRight;
 	}
 
     RaycastHit2D CheckRaycast(Vector2 direction, float change = 0)
@@ -88,6 +100,40 @@ public class enemyScript : MonoBehaviour {
 
     private void Update()
     {
+        if(abnormal)
+        {
+            if (raycast)
+            {
+                if (raycast.transform.tag == "Player")
+                {
+                    if (isRight)
+                    {
+                        movement = new Vector2(speed, rb.velocity.y);
+                    }
+                    else
+                    {
+                        movement = new Vector2(-speed, rb.velocity.y);
+                    }
+
+                    if (rb.velocity.x > 0)
+                    {
+                        transform.localScale = new Vector3(1f, 1f, 1f);
+                        facingRight = true;
+                    }
+                    if (rb.velocity.x < 0)
+                    {
+                        facingRight = false;
+                        transform.localScale = new Vector3(-1f, 1f, 1f);
+                    }
+                }
+            }
+            else
+            {
+                return;
+            }
+        }
+
+
         if (isRight)
         {
             movement = new Vector2(speed, rb.velocity.y);
@@ -96,32 +142,108 @@ public class enemyScript : MonoBehaviour {
         {
             movement = new Vector2(-speed, rb.velocity.y);
         }
+
+        if (rb.velocity.x > 0)
+        {
+            transform.localScale = new Vector3(1f, 1f, 1f);
+            facingRight = true;
+        }
+        if (rb.velocity.x < 0)
+        {
+            facingRight = false;
+            transform.localScale = new Vector3(-1f, 1f, 1f);
+        }
+
+      
+
     }
 
+    private void grounded()
+    {
+
+        if (raycast)
+        {
+            Debug.Log(raycast.transform.tag);
+            if (raycast.transform.tag != "Ground")
+           {
+              
+                /*
+               if (isRight)
+               {
+                   isRight = false;
+                }
+              else
+              {
+                    isRight = true;
+              }
+              */
+            }
+        }
+        else
+        {
+            StartCoroutine("changeDirection");
+        }
+    }
+
+    IEnumerator changeDirection()
+    {
+        Debug.Log("Uip");
+        yield return new WaitForSeconds(0.5f);
+        if (isRight)
+        {
+            Debug.Log("isRight is false");
+            isRight = false;
+        }
+        else
+        {
+            Debug.Log("isRight is true");
+            isRight = true;
+        }
+        yield return new WaitForSeconds(0.5f);
+
+    }
 
     // Update is called once per frame
     void FixedUpdate () {
 
-       
-        Vector2 direction = isRight ? new Vector2(1, 0) : new Vector2(-1, 0);
-        raycast = CheckRaycast(direction);
-        goombaDeath = CheckRaycast(Vector2.up);
-        if(goombaDeath)
+       /*
+        if(checkDown)
         {
-            DamageEnemy(200);
+            raycast = CheckRaycast(Vector2.down);            
+            grounded();
         }
-        goombaDeath = CheckRaycast(Vector2.up, (height/2));
-        if (goombaDeath)
+        else
         {
-            DamageEnemy(200);
-        }
-        goombaDeath = CheckRaycast(Vector2.up,(-height/2));
-        if (goombaDeath)
-        {
-            DamageEnemy(200);
-        }
+    */
+            Vector2 direction = isRight ? new Vector2(1, 0) : new Vector2(-1, 0);
+        raycastMaxDistance = raycastCheckAhead;
+            raycast = CheckRaycast(direction);
+        raycastMaxDistance = raycastCheckUp;
+            if(!checkDown)
+            {
+                goombaDeath = CheckRaycast(Vector2.up);
+                if (goombaDeath)
+                {
+                    DamageEnemy(200);
+                }
+                goombaDeath = CheckRaycast(Vector2.up, (height / 2));
+                if (goombaDeath)
+                {
+                    DamageEnemy(200);
+                }
+                goombaDeath = CheckRaycast(Vector2.up, (-height / 2));
+                if (goombaDeath)
+                {
+                    DamageEnemy(200);
+                }
+            }
+        raycastMaxDistance = raycastCheckAhead;
 
         Walled();
+        //}
+
+
+        
 
         /*
         if (isRight)

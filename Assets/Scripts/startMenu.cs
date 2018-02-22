@@ -5,7 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class startMenu : MonoBehaviour {
 
-
+    public GameObject controll;
     public void quitGame()
     {
         Application.Quit();
@@ -16,9 +16,22 @@ public class startMenu : MonoBehaviour {
         SceneManager.LoadScene(1);
     }
 
-    // Use this for initialization
+    public void controls()
+    {
+       controll.SetActive(true);
+        this.gameObject.SetActive(false);        
+    }
+    public void outOfControl()
+    {
+        this.gameObject.SetActive(true);
+     controll.SetActive(false);
+        
+    }
+
+
+   // Use this for initialization
     void Start () {
-		
+        controll.SetActive(false);
 	}
 	
 	// Update is called once per frame

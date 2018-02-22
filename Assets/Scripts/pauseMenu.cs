@@ -10,8 +10,10 @@ public class pauseMenu : MonoBehaviour {
 
     public GameObject pauseMenuUI;
 
-	// Use this for initialization
-	void Start () {
+    public GameObject controll;
+
+    // Use this for initialization
+    void Start () {
         pauseMenuUI.SetActive(false);
 	}
 
@@ -34,6 +36,17 @@ public class pauseMenu : MonoBehaviour {
         Time.timeScale = 1f;
         SceneManager.LoadScene(0);
         //load Menu Scene
+    }
+
+    public void controls()
+    {
+        controll.SetActive(true);
+        pauseMenuUI.gameObject.SetActive(false);
+    }
+    public void outOfControl()
+    {
+        pauseMenuUI.gameObject.SetActive(true);
+        controll.SetActive(false);
     }
 
     public void Restart()   

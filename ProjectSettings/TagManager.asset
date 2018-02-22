@@ -8,6 +8,8 @@ TagManager:
   - Enemy
   - Moving Platform
   - laser
+  - gun
+  - coin
   layers:
   - Default
   - TransparentFX

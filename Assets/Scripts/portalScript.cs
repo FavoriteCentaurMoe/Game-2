@@ -18,7 +18,7 @@ public class portalScript : MonoBehaviour {
             }
             else
             {
-                Debug.Log("H");
+                //Debug.Log("H");
                 gameManager.changeCheckpoint(test, rank);
                 gameManager.KillPlayer(collision.transform.GetComponent<playerScript>());
             }

@@ -61,7 +61,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &4206139722776128
 Transform:
   m_ObjectHideFlags: 1
@@ -189,6 +189,7 @@ MonoBehaviour:
   wallJumpWasFacingRight: 1
   wallJump: 0
   isJumping: 0
+  gunOn: 0
   groundRadius: 0
   originOffset: 0.5
   raycastMaxDistance: 0.6
@@ -207,6 +208,8 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 4294966783
   bullet: {fileID: 1662824299839488, guid: e5ffb584aa9a4f14d92f597c143a86e7, type: 2}
+  gun: {fileID: 1626295763921594}
+  bulletSpeed: 15
 --- !u!212 &212009720678155202
 SpriteRenderer:
   m_ObjectHideFlags: 1

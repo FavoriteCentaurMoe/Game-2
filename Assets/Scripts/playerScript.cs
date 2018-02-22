@@ -25,6 +25,8 @@ public class playerScript : MonoBehaviour {
     public bool wallJump = false;
     public bool isJumping;
 
+    public bool gunOn = false;
+
     [SerializeField]
     public float groundRadius;
     private Rigidbody2D playerRiggy;
@@ -67,12 +69,23 @@ public class playerScript : MonoBehaviour {
         lowJumpMultiplier = 2f;
         grounded = true;
         isJumping = false;
+        gun.SetActive(false);
     }
 
     // Use this for initialization
     void Start() {
         anim = GetComponent<Animator>();
         Physics2D.queriesStartInColliders = false;
+
+        bool thing = gameManager.gunStatus();
+
+        if(thing)
+        {
+            Debug.Log("YUUUP");
+            gunOn = true;
+            gun.SetActive(true);
+        }
+
     }
 
     // Update is called once per frame
@@ -89,7 +102,6 @@ public class playerScript : MonoBehaviour {
         if (health <= 0)
         {
             gameManager.KillPlayer(this);
-
         }
     }
 
@@ -138,6 +150,28 @@ public class playerScript : MonoBehaviour {
 
     }
 
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if(collision.tag == "gun")
+        {
+             gunOn = true;
+             gun.SetActive(true);
+            gameManager.gunActive();
+            Destroy(collision.gameObject);
+        }
+
+        if(collision.tag == "coin")
+        {
+            gameManager.moreCoins();
+            Destroy(collision.gameObject);
+        }
+    }
+
+    public void gunsON()
+    {
+
+    }
+
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
@@ -181,27 +215,20 @@ public class playerScript : MonoBehaviour {
     }
     public void shoot()
     {
-
-        //GameObject thing;
-        //Vector3 pos = new Vector3(transform.position.x, transform.position.y, transform.position.z);
-        //thing = Instantiate(bullet);
-
-       // Debug.Log("I AM SHOOOTING");
+        if(gunOn == false)
+        {
+            return;
+        }
         Vector2 direction = facingRight ? new Vector2(1, 0) : new Vector2(-1, 0);
-        //raycast = CheckRaycast(direction);
-
         Vector2 startingPosition = new Vector2(transform.position.x , transform.position.y);
         Vector2 test = new Vector2(direction.x * 15f, direction.y);
         Debug.DrawRay(startingPosition, test, Color.red);       
-
         RaycastHit2D hit =  Physics2D.Raycast(startingPosition, direction, 15f, notToHit );
         effect();
         if(hit)
         {
-            Debug.Log("Oh yes you've now hit " + hit.transform.tag);
             if (hit.transform.tag == "Enemy")
             {
-                Debug.Log("ATTACKing THE ENEMY");
                 gameManager.KillEnemy(hit.transform.GetComponent<enemyScript>());
             }
         }
@@ -233,7 +260,7 @@ public class playerScript : MonoBehaviour {
 
         if(spood == 0 && facingRight == true)
         {
-            Debug.Log("Yes");
+           // Debug.Log("Yes");
             gun.transform.localScale = new  Vector3(-3f, 3f, 1f);
         }
         else

@@ -196,7 +196,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   platform: {fileID: 1407932880816484}
-  speed: 3
+  speed: 5
   currentPoint: {fileID: 0}
   points:
   - {fileID: 4438356493947916}
