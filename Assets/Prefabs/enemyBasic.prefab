@@ -103,13 +103,14 @@ MonoBehaviour:
   speed: 5
   health: 0
   raycastMaxDistance: 0.8
-  raycastCheckUp: 1
+  raycastCheckUp: 0.5
   raycastCheckAhead: 1
   rb: {fileID: 0}
   previousDirection: 0
   checkDown: 0
   height: 0
   facingRight: 0
+  abnormal: 0
 --- !u!212 &212607463567637806
 SpriteRenderer:
   m_ObjectHideFlags: 1

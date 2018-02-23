@@ -94,6 +94,12 @@ public class playerScript : MonoBehaviour {
         {
             DamagePlayer(200);
         }
+        //if(wallJump)
+        //{
+            move();
+        //}
+  
+        BetterJump();
     }
 
     public void DamagePlayer(int damage)
@@ -251,8 +257,8 @@ public class playerScript : MonoBehaviour {
     //        }
 
   //      }
-        move();
-        BetterJump();
+      //  move();
+      //  BetterJump();
         ifMovingP();
 
 
@@ -345,7 +351,6 @@ public class playerScript : MonoBehaviour {
         moveX = Input.GetAxis("Horizontal");
 
         playerRiggy.velocity = new Vector2(moveX * speed * speedMultipliyer, playerRiggy.velocity.y);
-
        
         if (playerRiggy.velocity.x > 0)
         {
